@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/add"
+            android:icon="@android:drawable/ic_input_add"
+            android:title="Lisää tili" />
+        <item
+            android:id="@+id/addMoney"
+            android:icon="@android:drawable/ic_menu_add"
+            android:title="Talleta rahaa" />
+        <item
+            android:id="@+id/saldo"
+            android:icon="@android:drawable/ic_menu_view"
+            android:title="Tilitiedot" />
+        <item
+            android:id="@+id/cards"
+            android:icon="@drawable/money"
+            android:title="Maksukortit" />
+        <item
+            android:id="@+id/transfer"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Siirrä rahaa" />
+        <item
+            android:id="@+id/setting"
+            android:icon="@android:drawable/ic_menu_sort_by_size"
+            android:title="Tilitapahtumat" />
+    </group>
+
+    <item android:title="Käyttäjä">
+        <menu>
+            <item
+                android:id="@+id/user"
+                android:icon="@android:drawable/ic_dialog_info"
+                android:title="Käyttäjätiedot" />
+            <item
+                android:id="@+id/out"
+                android:icon="@android:drawable/ic_delete"
+                android:title="Kirjaudu ulos" />
+        </menu>
+    </item>
+
+</menu>
