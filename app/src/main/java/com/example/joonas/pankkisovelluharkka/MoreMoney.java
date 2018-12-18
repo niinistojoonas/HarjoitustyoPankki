@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -17,15 +16,15 @@ public class MoreMoney extends AppCompatActivity {
 
     private Spinner spinner;
 
-    ArrayList oliolista = new ArrayList();
+    ArrayList objectList = new ArrayList();
 
-    ArrayList tileja= new ArrayList();
+    ArrayList accountList = new ArrayList();
 
-    ArrayList spinnerLista= new ArrayList();
+    ArrayList spinnerList = new ArrayList();
 
-    String kayttis;
+    String userOfThis;
 
-    EditText lisattava;
+    EditText toAdd;
 
     String item;
 
@@ -37,51 +36,51 @@ public class MoreMoney extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_more_money);
 
-        spinnerLista.add("Valitse tili");
+        spinnerList.add("Valitse tili:");
 
 
 
-        lisattava = findViewById(R.id.editText17);
+        toAdd = findViewById(R.id.editText17);
 
 
         spinner = findViewById(R.id.spinner6);
 
 
-        User uusi = User.getInstance();
+        Bank newUSer = Bank.getInstance();
 
-        oliolista =  uusi.getList();
+        objectList =  newUSer.getList();
 
 
 
-        kayttis = (String) getIntent().getSerializableExtra("kayttis");
+        userOfThis = (String) getIntent().getSerializableExtra("nameOfUser");
         who = (String) getIntent().getSerializableExtra("kumpi");
 
 
-        for (int i = 0; i<oliolista.size(); i++){
-            objectUser kayttaja = (objectUser) oliolista.get(i);
-            System.out.println(kayttaja.getName());
-            System.out.println(kayttis);
-            if (kayttaja.getName().equals(kayttis)){
-                System.out.println(kayttis);
-                tileja = kayttaja.returnList();
-                System.out.println(tileja.size());
-                for (int c = 0; c<tileja.size(); c++){
-                    account tili = (account) tileja.get(c);
+        for (int i = 0; i< objectList.size(); i++){
+            objectUser users = (objectUser) objectList.get(i);
+            System.out.println(users.getName());
+            System.out.println(userOfThis);
+            if (users.getName().equals(userOfThis)){
+                System.out.println(userOfThis);
+                accountList = users.returnList();
+                System.out.println(accountList.size());
+                for (int c = 0; c< accountList.size(); c++){
+                    account tili = (account) accountList.get(c);
                     System.out.println(tili.getAccountNumber());
-                    spinnerLista.add(tili.getAccountNumber());
+                    spinnerList.add(tili.getAccountNumber());
                 }
             }
         }
 
         ArrayAdapter<String> dataAdapter;
-        dataAdapter  = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerLista); //creates spinner for acounts
+        dataAdapter  = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerList); //creates spinner for acounts
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                if (parent.getItemAtPosition(position).equals("Valitse tili")){
+                if (parent.getItemAtPosition(position).equals("Valitse tili:")){
 
                 }
                 else{
@@ -99,29 +98,29 @@ public class MoreMoney extends AppCompatActivity {
         });
     }
 
-    public void maksa(View v){ // adds money to the account
-        for (int i = 0; i<oliolista.size(); i++){
-            objectUser kayttaja = (objectUser) oliolista.get(i);
-            System.out.println(kayttaja.getName());
-            System.out.println(kayttis);
-            if (kayttaja.getName().equals(kayttis)){
-                System.out.println(kayttis);
-                tileja = kayttaja.returnList();
-                for (int c = 0; c<tileja.size(); c++){
-                    account tili = (account) tileja.get(c);
-                    System.out.println(tili.getAccountNumber());
+    public void takeMoney(View v){ // adds money to the account
+        for (int i = 0; i< objectList.size(); i++){
+            objectUser users = (objectUser) objectList.get(i);
+            System.out.println(users.getName());
+            System.out.println(userOfThis);
+            if (users.getName().equals(userOfThis)){
+                System.out.println(userOfThis);
+                accountList = users.returnList();
+                for (int c = 0; c< accountList.size(); c++){
+                    account accounts1 = (account) accountList.get(c);
+                    System.out.println(accounts1.getAccountNumber());
                     System.out.println(item);
-                    if (tili.getAccountNumber().equals(item)){
-                        int saatava = Integer.parseInt(lisattava.getText().toString().trim());
-                        tili.getMoney(saatava);
-                        kayttaja.talletaLista(item, saatava);
+                    if (accounts1.getAccountNumber().equals(item)){
+                        int toGet = Integer.parseInt(toAdd.getText().toString().trim());
+                        accounts1.getMoney(toGet);
+                        users.moreMoneyList(item, toGet);
                         if (who.equals("pankki")) {
-                            Intent intent = new Intent(this, PankkiController.class);
+                            Intent intent = new Intent(this, BankControllerActivity.class);
                             startActivity(intent);
                         }
                         else{
                             Intent intent = new Intent(this, Mainactivity.class);
-                            intent.putExtra("kayttis", kayttis);
+                            intent.putExtra("nameOfUser", userOfThis);
                             startActivity(intent);
                         }
                     }

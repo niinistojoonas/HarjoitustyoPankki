@@ -8,9 +8,9 @@ public class objectUser { //this is object of one user
     private String addres;
     private String number;
 
-    ArrayList<account> tilit = new ArrayList<>();
+    ArrayList<account> accountsList = new ArrayList<>();
 
-    ArrayList<String> tilitiedot = new ArrayList<>();
+    ArrayList<String> historyList = new ArrayList<>();
 
 
     public objectUser(String n, String p, String a, String x) {
@@ -50,36 +50,36 @@ public class objectUser { //this is object of one user
 
     public void addAccount(String An, int m, String t){
         account uusi = new account(An, m, t);
-        tilit.add(uusi);
+        accountsList.add(uusi);
     }
 
     public ArrayList<account> returnList(){
-        return tilit;
+        return accountsList;
     } // returns list of this users accounts
 
 
     public ArrayList<String> returnList2(){
-        return tilitiedot;
+        return historyList;
     } // returns list of this users payment and deposit history
 
 
-    public void tililtarahaaLista(String minne, String mista, int p){
-        tilitiedot.add("Siirrettiin "+p+"€ rahaa  tililtä "+mista+" tilille "+minne);
+    public void moneyFromList(String minne, String mista, int p){
+        historyList.add("Siirrettiin "+p+"€ rahaa  tililtä "+mista+" tilille "+minne);
     }
-    public void tilillerahaaLista(String minne, String mista, int p){
-        tilitiedot.add("Saatiin "+p+"€ rahaa tilille "+minne+" tililtä "+mista);
-    }
-
-    public void maksaKortilla(String mista, int p){
-        tilitiedot.add("Maksettiin tilin "+mista+" maksukortilla "+p+"€");
+    public void moneyToList(String minne, String mista, int p){
+        historyList.add("Saatiin "+p+"€ rahaa tilille "+minne+" tililtä "+mista);
     }
 
-    public void talletaLista(String minne, int p){
-        tilitiedot.add("Talletettiin tilille "+minne+" rahaa "+p+"€");
+    public void BuywithCardList(String mista, int p){
+        historyList.add("Maksettiin tilin "+mista+" maksukortilla "+p+"€");
     }
 
-    public void poistaTili(int m){
-        tilit.remove(m);
+    public void moreMoneyList(String minne, int p){
+        historyList.add("Talletettiin tilille "+minne+" money1 "+p+"€");
+    }
+
+    public void deteleAccount(int m){
+        accountsList.remove(m);
     }
 }
 

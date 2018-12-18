@@ -12,16 +12,16 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class LisaaTili extends AppCompatActivity {
+public class NewAccountActivity extends AppCompatActivity {
 
-    EditText tilinumero;
-    EditText rahaa;
+    EditText accountsNumber;
+    EditText money1;
 
-    ArrayList oliolista = new ArrayList();
+    ArrayList objectList = new ArrayList();
 
-    String kayttis;
+    String userOfThis;
 
-    ArrayList spinnerLista = new ArrayList();
+    ArrayList spinnerList = new ArrayList();
 
     Spinner spinner;
 
@@ -35,26 +35,26 @@ public class LisaaTili extends AppCompatActivity {
         setContentView(R.layout.activity_lisaa_tili);
 
 
-        spinnerLista.add("Normaalitili");
-        spinnerLista.add("Säästötili");
+        spinnerList.add("Normaalitili");
+        spinnerList.add("Säästötili");
 
         spinner = findViewById(R.id.spinner2);
 
 
-        tilinumero = findViewById(R.id.editText10);
-        rahaa = findViewById(R.id.editText11);
+        accountsNumber = findViewById(R.id.editText10);
+        money1 = findViewById(R.id.editText11);
 
-        User uusi = User.getInstance();
-        oliolista = uusi.getList();
+        Bank newUser = Bank.getInstance();
+        objectList = newUser.getList();
 
-        kayttis = (String) getIntent().getSerializableExtra("kayttis");
+        userOfThis = (String) getIntent().getSerializableExtra("nameOfUser");
         who = (String) getIntent().getSerializableExtra("kumpi");
 
 
 
 
         ArrayAdapter<String> dataAdapter;
-        dataAdapter  = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerLista); //creates spinner of different types of accounts
+        dataAdapter  = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerList); //creates spinner of different types of accounts
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -87,20 +87,20 @@ public class LisaaTili extends AppCompatActivity {
     public void newAccount(View v) { // makes new account
 
 
-        for (int i = 0; i < oliolista.size(); i++) {
-            objectUser kayttaja = (objectUser) oliolista.get(i);
-            if (kayttaja.getName().equals(kayttis)) {
-                if (!tilinumero.getText().toString().isEmpty() & !rahaa.getText().toString().isEmpty()){ //checks that all the places are filled
-                    int MON = Integer.parseInt(rahaa.getText().toString().trim());
+        for (int i = 0; i < objectList.size(); i++) {
+            objectUser users = (objectUser) objectList.get(i);
+            if (users.getName().equals(userOfThis)) {
+                if (!accountsNumber.getText().toString().isEmpty() & !money1.getText().toString().isEmpty()){ //checks that all the places are filled
+                    int MON = Integer.parseInt(money1.getText().toString().trim());
                     System.out.println(MON);
-                    kayttaja.addAccount(tilinumero.getText().toString(), MON, item);
+                    users.addAccount(accountsNumber.getText().toString(), MON, item);
                     if (who.equals("pankki")) { //goes back to bankCotroller
-                        Intent intent = new Intent(this, PankkiController.class);
+                        Intent intent = new Intent(this, BankControllerActivity.class);
                         startActivity(intent);
                     }
                     else{
                         Intent intent = new Intent(this, Mainactivity.class); //goes back to user mainactivity
-                        intent.putExtra("kayttis", kayttis);
+                        intent.putExtra("nameOfUser", userOfThis);
                         startActivity(intent);
                     }
                 }

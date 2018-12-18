@@ -16,15 +16,15 @@ public class CardActivity extends AppCompatActivity {
 
     Spinner spinner;
 
-    ArrayList oliolista = new ArrayList();
+    ArrayList objectList = new ArrayList();
 
     ArrayList spinnerLista = new ArrayList();
 
-    String kayttis;
+    String nameOfUser;
 
-    ArrayList tileja= new ArrayList();
+    ArrayList accountList = new ArrayList();
 
-    ArrayList toimialue = new ArrayList();
+    ArrayList zoneList = new ArrayList();
 
     String item;
 
@@ -32,12 +32,12 @@ public class CardActivity extends AppCompatActivity {
 
     Spinner spinner2;
 
-    TextView onko;
+    TextView hasIt;
 
 
-    TextView nostoraja;
+    TextView limit1;
 
-    TextView maksuraja;
+    TextView limit2;
 
     String who;
 
@@ -48,11 +48,11 @@ public class CardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_card);
 
 
-        toimialue.add("Suomi");
-        toimialue.add("Eurooppa");
-        toimialue.add("Koko maailma");
+        zoneList.add("Suomi");
+        zoneList.add("Eurooppa");
+        zoneList.add("Koko maailma");
 
-        kayttis = (String) getIntent().getSerializableExtra("kayttis"); //tells the program who is the user
+        nameOfUser = (String) getIntent().getSerializableExtra("nameOfUser"); //tells the program who is the user
 
         who = (String) getIntent().getSerializableExtra("kumpi"); // tells the program if the user is bank controller (Pankinjohtaja)
 
@@ -63,31 +63,31 @@ public class CardActivity extends AppCompatActivity {
         spinner2 = findViewById(R.id.spinner4);
 
 
-        nostoraja = findViewById(R.id.editText12);
-        maksuraja = findViewById(R.id.editText13);
-        onko = findViewById(R.id.textView18);
+        limit1 = findViewById(R.id.editText12);
+        limit2 = findViewById(R.id.editText13);
+        hasIt = findViewById(R.id.textView18);
 
 
-        User uusi = User.getInstance();
+        Bank newUser = Bank.getInstance();
 
-        oliolista =  uusi.getList();
-
-
-
-        kayttis = (String) getIntent().getSerializableExtra("kayttis");
-        System.out.println("TAMA ON"+kayttis);
+        objectList =  newUser.getList();
 
 
-        for (int i = 0; i<oliolista.size(); i++){
-            objectUser kayttaja = (objectUser) oliolista.get(i);
-            System.out.println(kayttaja.getName());
-            System.out.println(kayttis);
-            if (kayttaja.getName().equals(kayttis)){
-                System.out.println(kayttis);
-                tileja = kayttaja.returnList();
-                System.out.println(tileja.size());
-                for (int c = 0; c<tileja.size(); c++){
-                    account tili = (account) tileja.get(c);
+
+        nameOfUser = (String) getIntent().getSerializableExtra("nameOfUser");
+        System.out.println("TAMA ON"+ nameOfUser);
+
+
+        for (int i = 0; i< objectList.size(); i++){
+            objectUser useObject = (objectUser) objectList.get(i);
+            System.out.println(useObject.getName());
+            System.out.println(nameOfUser);
+            if (useObject.getName().equals(nameOfUser)){
+                System.out.println(nameOfUser);
+                accountList = useObject.returnList();
+                System.out.println(accountList.size());
+                for (int c = 0; c< accountList.size(); c++){
+                    account tili = (account) accountList.get(c);
                     System.out.println(tili.getAccountNumber());
                     spinnerLista.add(tili.getAccountNumber());
                     }
@@ -95,7 +95,7 @@ public class CardActivity extends AppCompatActivity {
         }
 
         ArrayAdapter<String> dataAdapter;
-        dataAdapter  = new ArrayAdapter(this, android.R.layout.simple_spinner_item, toimialue); // creates spinner for diffent working zones
+        dataAdapter  = new ArrayAdapter(this, android.R.layout.simple_spinner_item, zoneList); // creates spinner for diffent working zones
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(dataAdapter);
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -134,24 +134,24 @@ public class CardActivity extends AppCompatActivity {
                 else{
 
                     item = parent.getItemAtPosition(position).toString();
-                    for (int i = 0; i<oliolista.size(); i++){
-                        objectUser kayttaja = (objectUser) oliolista.get(i);
-                        if (kayttaja.getName().equals(kayttis)){
-                            System.out.println(kayttis);
-                            tileja = kayttaja.returnList();
-                            System.out.println(tileja.size());
-                            for (int c = 0; c<tileja.size(); c++){
-                                account tili = (account) tileja.get(c);
+                    for (int i = 0; i< objectList.size(); i++){
+                        objectUser kayttaja = (objectUser) objectList.get(i);
+                        if (kayttaja.getName().equals(nameOfUser)){
+                            System.out.println(nameOfUser);
+                            accountList = kayttaja.returnList();
+                            System.out.println(accountList.size());
+                            for (int c = 0; c< accountList.size(); c++){
+                                account tili = (account) accountList.get(c);
                                 if (item.equals(tili.getAccountNumber())){
                                     if (tili.hasCard()) {
-                                        maksuraja.setText(tili.getCardBuyLimit());
-                                        nostoraja.setText(tili.getCardTakeLimit());
-                                        onko.setText("ON KORTTI");
+                                        limit2.setText(tili.getCardBuyLimit());
+                                        limit1.setText(tili.getCardTakeLimit());
+                                        hasIt.setText("ON KORTTI");
                                     }
                                     else{
-                                        onko.setText("EI OLE KORTTIA");
-                                        maksuraja.setText("");
-                                        nostoraja.setText("");
+                                        hasIt.setText("EI OLE KORTTIA");
+                                        limit2.setText("");
+                                        limit1.setText("");
                                     }
                                 }
                             }
@@ -170,31 +170,31 @@ public class CardActivity extends AppCompatActivity {
 
 
     }
-    public void tallennus(View v){ //saves the card if created
-        String nRaja = nostoraja.getText().toString();
-        String mRaja = maksuraja.getText().toString();
+    public void saveThis(View v){ //saves the card if created
+        String limitTake = limit1.getText().toString();
+        String limitBuy = limit2.getText().toString();
 
-        for (int i = 0; i<oliolista.size(); i++){
-            objectUser kayttaja = (objectUser) oliolista.get(i);
-            System.out.println(kayttaja.getName());
-            System.out.println(kayttis);
-            if (kayttaja.getName().equals(kayttis)){
-                System.out.println(kayttis);
-                tileja = kayttaja.returnList();
-                System.out.println(tileja.size());
-                for (int c = 0; c<tileja.size(); c++) {
-                    account tili = (account) tileja.get(c);
-                    if (item.equals(tili.getAccountNumber())) {
-                        if (!mRaja.isEmpty() & !nRaja.isEmpty()){
-                            tili.addCard(mRaja, nRaja, item2); //sets limits for the card and creates it
-                            tili.makeCard(); //makes the value of has card true
+        for (int i = 0; i< objectList.size(); i++){
+            objectUser users = (objectUser) objectList.get(i);
+            System.out.println(users.getName());
+            System.out.println(nameOfUser);
+            if (users.getName().equals(nameOfUser)){
+                System.out.println(nameOfUser);
+                accountList = users.returnList();
+                System.out.println(accountList.size());
+                for (int c = 0; c< accountList.size(); c++) {
+                    account accounts1 = (account) accountList.get(c);
+                    if (item.equals(accounts1.getAccountNumber())) {
+                        if (!limitBuy.isEmpty() & !limitTake.isEmpty()){
+                            accounts1.addCard(limitBuy, limitTake, item2); //sets limits for the card and creates it
+                            accounts1.makeCard(); //makes the value of has card true
                             if (who.equals("pankki")) {
-                                Intent intent = new Intent(this, PankkiController.class);
+                                Intent intent = new Intent(this, BankControllerActivity.class);
                                 startActivity(intent);
                             }
                             else{
                                 Intent intent = new Intent(this, Mainactivity.class);
-                                intent.putExtra("kayttis", kayttis);
+                                intent.putExtra("nameOfUser", nameOfUser);
                                 startActivity(intent);
                             }
                         }
@@ -208,26 +208,26 @@ public class CardActivity extends AppCompatActivity {
         }
 
     }
-    public void poista(View v){ //deletes card if pressed
+    public void deleteCard(View v){ //deletes card if pressed
 
-        for (int i = 0; i<oliolista.size(); i++){
-            objectUser kayttaja = (objectUser) oliolista.get(i);
-            System.out.println(kayttaja.getName());
-            System.out.println(kayttis);
-            if (kayttaja.getName().equals(kayttis)){
-                tileja = kayttaja.returnList();
-                System.out.println(tileja.size());
-                for (int c = 0; c<tileja.size(); c++) {
-                    account tili = (account) tileja.get(c);
-                    if (item.equals(tili.getAccountNumber())) {
-                        tili.deleteCard();
+        for (int i = 0; i< objectList.size(); i++){
+            objectUser users = (objectUser) objectList.get(i);
+            System.out.println(users.getName());
+            System.out.println(nameOfUser);
+            if (users.getName().equals(nameOfUser)){
+                accountList = users.returnList();
+                System.out.println(accountList.size());
+                for (int c = 0; c< accountList.size(); c++) {
+                    account accounts1 = (account) accountList.get(c);
+                    if (item.equals(accounts1.getAccountNumber())) {
+                        accounts1.deleteCard();
                         if (who.equals("pankki")) {
-                            Intent intent = new Intent(this, PankkiController.class);
+                            Intent intent = new Intent(this, BankControllerActivity.class);
                             startActivity(intent);
                         }
                         else{
                             Intent intent = new Intent(this, Mainactivity.class);
-                            intent.putExtra("kayttis", kayttis);
+                            intent.putExtra("nameOfUser", nameOfUser);
                             startActivity(intent);
                         }
                     }
@@ -238,8 +238,8 @@ public class CardActivity extends AppCompatActivity {
     }
 
 
-    public void maksaKortilla(View v){ //goes to a activity where user can pay with card
-        if (onko.getText().equals("ON KORTTI")){
+    public void buyWithCard(View v){ //goes to a activity where user can pay with card
+        if (hasIt.getText().equals("ON KORTTI")){
             if (who.equals("pankki")) {
                 Toast.makeText(getBaseContext(), "Ei mahdollista maksaa tällä käyttäjällä!", Toast.LENGTH_SHORT).show();
             }
@@ -247,9 +247,9 @@ public class CardActivity extends AppCompatActivity {
 
 
 
-                Intent intent = new Intent(this, kortillaMaksu.class);
-                intent.putExtra("kayttis", kayttis);
-                intent.putExtra("tili", item);
+                Intent intent = new Intent(this, PayCardActivity.class);
+                intent.putExtra("nameOfUser", nameOfUser);
+                intent.putExtra("account1", item);
                 startActivity(intent);
             }
 

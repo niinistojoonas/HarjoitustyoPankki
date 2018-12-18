@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Saldot">
+    tools:context=".SaldosActivity">
 
     <Spinner
         android:id="@+id/spinner"
@@ -116,7 +116,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@android:color/holo_red_dark"
-        android:onClick="poistatili"
+        android:onClick="deleteAccount"
         android:text="Poista tili"
         android:textColor="@android:color/background_light"
         android:textStyle="bold"
@@ -136,7 +136,7 @@
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@android:color/holo_red_dark"
-        android:onClick="kuoletatili"
+        android:onClick="freezeThis"
         android:text="Kuoleta tili"
         android:textColor="@android:color/background_light"
         android:textStyle="bold"

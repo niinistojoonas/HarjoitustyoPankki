@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Kirjautuminen">
+        <activity android:name=".LogInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,17 +25,17 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".UserInfo" />
-        <activity android:name=".Uusi" />
-        <activity android:name=".LisaaTili" />
-        <activity android:name=".Saldot" />
+        <activity android:name=".UserInfoActivity" />
+        <activity android:name=".newUserActivity" />
+        <activity android:name=".NewAccountActivity" />
+        <activity android:name=".SaldosActivity" />
         <activity android:name=".CardActivity" />
         <activity android:name=".TransferActivity" />
-        <activity android:name=".TilitapahtumatActivity" />
-        <activity android:name=".kortillaMaksu" />
+        <activity android:name=".AccountEventActivity" />
+        <activity android:name=".PayCardActivity" />
         <activity android:name=".MoreMoney" />
-        <activity android:name=".PankkiController" />
-        <activity android:name=".ChangePassword"></activity>
+        <activity android:name=".BankControllerActivity" />
+        <activity android:name=".ChangePasswordActivity"></activity>
     </application>
 
 </manifest>

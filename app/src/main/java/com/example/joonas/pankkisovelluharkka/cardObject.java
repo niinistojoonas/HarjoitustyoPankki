@@ -1,26 +1,26 @@
 package com.example.joonas.pankkisovelluharkka;
 
 public class cardObject {
-    private String maksuraja =  "";
-    private String nostoraja = "";
-    private String toimivuusalue = "Suomi";
+    private String buyLimit =  "";
+    private String liftLimit = "";
+    private String zone = "Suomi";
 
 
     public void createCard(String m, String n, String t){ //card object
-        maksuraja = m;
-        nostoraja = n;
-        toimivuusalue = t;
+        buyLimit = m;
+        liftLimit = n;
+        zone = t;
     }
 
-    public String getMaksuraja(){
-        return maksuraja;
+    public String getCardBuyinglimit(){
+        return buyLimit;
     } //returns paying limit
 
-    public String getNostoraja() {
-        return nostoraja;
+    public String getCardLiftingLimit() {
+        return liftLimit;
     } //returns lift limit
 
-    public String getToimivuusalue(){
-        return toimivuusalue;
+    public String getCardZone(){
+        return zone;
     } // gets working zone of the card
 }

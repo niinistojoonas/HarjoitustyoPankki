@@ -10,15 +10,15 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 
-public class PankkiController extends AppCompatActivity {
+public class BankControllerActivity extends AppCompatActivity {
 
     private Spinner spinner;
 
-    ArrayList oliolista = new ArrayList();
+    ArrayList objectList = new ArrayList();
 
-    ArrayList spinnerLista= new ArrayList();
+    ArrayList spinnerList = new ArrayList();
 
-    ArrayList kayttajalista= new ArrayList();
+    ArrayList usersList = new ArrayList();
 
     String item;
 
@@ -29,17 +29,17 @@ public class PankkiController extends AppCompatActivity {
 
         spinner = findViewById(R.id.spinner7);
 
-        User uusi = User.getInstance();
+        Bank newUser = Bank.getInstance();
 
-        oliolista =  uusi.getList();
-
-
-        kayttajalista.add("Valitse käyttäjä");
+        objectList =  newUser.getList();
 
 
-        for (int i = 0; i<oliolista.size(); i++){
-            objectUser kayttaja = (objectUser) oliolista.get(i);
-            spinnerLista.add(kayttaja.getName());
+        usersList.add("Valitse käyttäjä");
+
+
+        for (int i = 0; i< objectList.size(); i++){
+            objectUser users = (objectUser) objectList.get(i);
+            spinnerList.add(users.getName());
         }
 
 
@@ -47,7 +47,7 @@ public class PankkiController extends AppCompatActivity {
 
 
         ArrayAdapter<String> dataAdapter; // creates spinner of users
-        dataAdapter  = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerLista);
+        dataAdapter  = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -68,62 +68,62 @@ public class PankkiController extends AppCompatActivity {
         });
     }
 
-    public void tilitiedot(View v){ // goes to check payment and deposit history
-        Intent intent = new Intent(this, TilitapahtumatActivity.class);
-        intent.putExtra("kayttis", item);
+    public void accountInfo(View v){ // goes to check payment and deposit history
+        Intent intent = new Intent(this, AccountEventActivity.class);
+        intent.putExtra("nameOfUser", item);
         startActivity(intent);
     }
 
-    public void poistaKayttaja(View v){ //deletes user
-        for (int i = 0; i<oliolista.size(); i++){
-            objectUser kayttaja = (objectUser) oliolista.get(i);
+    public void deleteUser(View v){ //deletes user
+        for (int i = 0; i< objectList.size(); i++){
+            objectUser kayttaja = (objectUser) objectList.get(i);
             if (item.equals(kayttaja.getName())){
-                oliolista.remove(kayttaja);
-                Intent intent = new Intent(this, PankkiController.class);
+                objectList.remove(kayttaja);
+                Intent intent = new Intent(this, BankControllerActivity.class);
                 startActivity(intent);
             }
         }
     }
 
-    public void saldot(View v){ // goes check palances
-        Intent intent = new Intent(this, Saldot.class);
-        intent.putExtra("kayttis", item);
+    public void saldos(View v){ // goes check palances
+        Intent intent = new Intent(this, SaldosActivity.class);
+        intent.putExtra("nameOfUser", item);
         intent.putExtra("kumpi", "pankki"); //with this activity knows that bank controller is using it and returns to this class
         startActivity(intent);
     }
 
-    public void kortit(View v){ // goes to card activity
+    public void cards(View v){ // goes to card activity
         Intent intent = new Intent(this, CardActivity.class);
-        intent.putExtra("kayttis", item);
+        intent.putExtra("nameOfUser", item);
         intent.putExtra("kumpi", "pankki");
         startActivity(intent);
     }
 
-    public void lisaatili(View v){ //adds accounts
-         Intent intent = new Intent(this, LisaaTili.class);
-         intent.putExtra("kayttis", item);
+    public void addAccount(View v){ //adds accounts
+         Intent intent = new Intent(this, NewAccountActivity.class);
+         intent.putExtra("nameOfUser", item);
          intent.putExtra("kumpi", "pankki");
          startActivity(intent);
     }
 
-    public void lisaaRahaa(View v){ //adds money
+    public void moreMoney(View v){ //adds money
          Intent intent = new Intent(this, MoreMoney.class);
-         intent.putExtra("kayttis", item);
+         intent.putExtra("nameOfUser", item);
          intent.putExtra("kumpi", "pankki");
          startActivity(intent);
     }
 
 
-    public void kayttajaTiedot(View v){ //checks user info
-         Intent intent = new Intent(this, UserInfo.class);
-         intent.putExtra("kayttis", item);
+    public void usersInformation(View v){ //checks user info
+         Intent intent = new Intent(this, UserInfoActivity.class);
+         intent.putExtra("nameOfUser", item);
          intent.putExtra("kumpi", "pankki");
          startActivity(intent);
     }
 
 
-    public void ulos(View v){ //logsout
-        Intent intent = new Intent(this, Kirjautuminen.class);
+    public void outTo(View v){ //logsout
+        Intent intent = new Intent(this, LogInActivity.class);
         startActivity(intent);
     }
 

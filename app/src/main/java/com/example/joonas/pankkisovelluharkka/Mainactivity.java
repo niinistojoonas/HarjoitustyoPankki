@@ -2,9 +2,6 @@ package com.example.joonas.pankkisovelluharkka;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,12 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
-
 public class Mainactivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    String kayttis;
+    String userOfThis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) { // this is the main activity. Here user can deside what he wants to do
@@ -38,7 +33,7 @@ public class Mainactivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        kayttis = (String) getIntent().getSerializableExtra("kayttis");
+        userOfThis = (String) getIntent().getSerializableExtra("nameOfUser");
 
 
 
@@ -70,8 +65,8 @@ public class Mainactivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, ChangePassword.class);
-            intent.putExtra("kayttis", kayttis);
+            Intent intent = new Intent(this, ChangePasswordActivity.class);
+            intent.putExtra("nameOfUser", userOfThis);
             startActivity(intent);
             return true;
         }
@@ -86,50 +81,50 @@ public class Mainactivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.add) { //goes to add new account
-            Intent intent = new Intent(this, LisaaTili.class);
-            intent.putExtra("kayttis", kayttis);
+            Intent intent = new Intent(this, NewAccountActivity.class);
+            intent.putExtra("nameOfUser", userOfThis);
             intent.putExtra("kumpi", "normal");
             startActivity(intent);
         } else if (id == R.id.saldo) { //goes to check account balances
-            Intent intent = new Intent(this, Saldot.class);
-            intent.putExtra("kayttis", kayttis);
+            Intent intent = new Intent(this, SaldosActivity.class);
+            intent.putExtra("nameOfUser", userOfThis);
             intent.putExtra("kumpi", "normal");
             startActivity(intent);
 
         } else if (id == R.id.transfer) { //goes to transfer money
             Intent intent = new Intent(this, TransferActivity.class);
-            intent.putExtra("kayttis", kayttis);
+            intent.putExtra("nameOfUser", userOfThis);
             startActivity(intent);
         }
 
         else if (id == R.id.cards){ //goes to teh card activity
             Intent intent = new Intent(this, CardActivity.class);
-            intent.putExtra("kayttis", kayttis);
+            intent.putExtra("nameOfUser", userOfThis);
             intent.putExtra("kumpi", "normal");
             startActivity(intent);
         }
 
         else if (id == R.id.addMoney){ //goes to add money
             Intent intent = new Intent(this, MoreMoney.class);
-            intent.putExtra("kayttis", kayttis);
+            intent.putExtra("nameOfUser", userOfThis);
             intent.putExtra("kumpi", "normal");
             startActivity(intent);
         }
 
 
         else if (id == R.id.user) { //goes to user info
-            Intent intent = new Intent(this, UserInfo.class);
-            intent.putExtra("kayttis", kayttis);
+            Intent intent = new Intent(this, UserInfoActivity.class);
+            intent.putExtra("nameOfUser", userOfThis);
             intent.putExtra("kumpi", "normal");
             startActivity(intent);
 
         } else if (id == R.id.out) { // logs out
-            Intent intent = new Intent(this, Kirjautuminen.class);
+            Intent intent = new Intent(this, LogInActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.setting) { //goes to check history of payments and deposits
-            Intent intent = new Intent(this, TilitapahtumatActivity.class);
-            intent.putExtra("kayttis", kayttis);
+            Intent intent = new Intent(this, AccountEventActivity.class);
+            intent.putExtra("nameOfUser", userOfThis);
             startActivity(intent);
         }
 

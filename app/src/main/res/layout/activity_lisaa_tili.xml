@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LisaaTili">
+    tools:context=".NewAccountActivity">
 
     <TextView
         android:id="@+id/textView4"
@@ -52,7 +52,7 @@
         android:layout_marginBottom="8dp"
         android:ems="10"
         android:hint="Rahaa tilille"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

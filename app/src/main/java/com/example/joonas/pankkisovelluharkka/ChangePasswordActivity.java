@@ -5,12 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class ChangePassword extends AppCompatActivity {
+public class ChangePasswordActivity extends AppCompatActivity {
 
 
     EditText old1;
@@ -19,7 +18,7 @@ public class ChangePassword extends AppCompatActivity {
 
     EditText new1;
 
-    String kayttis;
+    String nameOfUser;
 
     ArrayList oliolista = new ArrayList();
 
@@ -34,9 +33,9 @@ public class ChangePassword extends AppCompatActivity {
         new1 = findViewById(R.id.editText20);
 
 
-        kayttis = (String) getIntent().getSerializableExtra("kayttis");
+        nameOfUser = (String) getIntent().getSerializableExtra("nameOfUser");
 
-        User uusi = User.getInstance();
+        Bank uusi = Bank.getInstance();
 
         oliolista =  uusi.getList();
 
@@ -45,7 +44,7 @@ public class ChangePassword extends AppCompatActivity {
 
 
 
-    public void vaihda(View v){ //changes password
+    public void changePassword(View v){ //changes password
         String newPas1 = new1.getText().toString();
         String newPas2 = new2.getText().toString();
         if (!newPas1.isEmpty()){ //checks if the new password is empty
@@ -53,12 +52,12 @@ public class ChangePassword extends AppCompatActivity {
                 String oldPas = old1.getText().toString();
                 for (int i = 0; i<oliolista.size(); i++){
                     objectUser kayttaja = (objectUser) oliolista.get(i);
-                    if (kayttaja.getName().equals(kayttis)){
+                    if (kayttaja.getName().equals(nameOfUser)){
                         if (kayttaja.getPassword().equals(oldPas)){ // checks if the old password is correct
                             kayttaja.changePasword(newPas1); //changes password
                             Intent intent = new Intent(this, Mainactivity.class);
-                            kayttis = kayttaja.getName();
-                            intent.putExtra("kayttis", kayttis);
+                            nameOfUser = kayttaja.getName();
+                            intent.putExtra("nameOfUser", nameOfUser);
                             startActivity(intent);
                         }
                         else{

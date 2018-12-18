@@ -17,17 +17,16 @@ public class TransferActivity extends AppCompatActivity {
 
     Spinner spinner;
 
-    ArrayList oliolista = new ArrayList();
-    ArrayList spinnerLista= new ArrayList();
-    ArrayList tileja= new ArrayList();
-    ArrayList tileja2= new ArrayList();
+    ArrayList objectList = new ArrayList();
+    ArrayList spinnerList = new ArrayList();
+    ArrayList accountList = new ArrayList();
 
-    EditText siirrettavaSumma;
-    EditText tili;
+    EditText transferSum;
+    EditText account1;
 
-    TextView tyyppi;
+    TextView type;
 
-    String kayttis;
+    String userOfthis;
 
     String item;
 
@@ -38,49 +37,49 @@ public class TransferActivity extends AppCompatActivity {
 
         spinner = findViewById(R.id.spinner5);
 
-        siirrettavaSumma = findViewById(R.id.editText15);
-        tili = findViewById(R.id.editText14);
+        transferSum = findViewById(R.id.editText15);
+        account1 = findViewById(R.id.editText14);
 
-        tyyppi = findViewById(R.id.textView22);
-
-
-
-        User uusi = User.getInstance();
-
-        oliolista =  uusi.getList();
+        type = findViewById(R.id.textView22);
 
 
 
+        Bank newUSer = Bank.getInstance();
 
-        kayttis = (String) getIntent().getSerializableExtra("kayttis");
-        System.out.println("TAMA ON"+kayttis);
+        objectList =  newUSer.getList();
 
 
-        for (int i = 0; i<oliolista.size(); i++){
-            objectUser kayttaja = (objectUser) oliolista.get(i);
-            System.out.println(kayttaja.getName());
-            System.out.println(kayttis);
-            if (kayttaja.getName().equals(kayttis)){
-                System.out.println(kayttis);
-                tileja = kayttaja.returnList();
-                System.out.println(tileja.size());
-                for (int c = 0; c<tileja.size(); c++){
-                    account tili = (account) tileja.get(c);
-                    System.out.println(tili.getAccountNumber());
-                    spinnerLista.add(tili.getAccountNumber());
+
+
+        userOfthis = (String) getIntent().getSerializableExtra("nameOfUser");
+        System.out.println("TAMA ON"+ userOfthis);
+
+
+        for (int i = 0; i< objectList.size(); i++){
+            objectUser users = (objectUser) objectList.get(i);
+            System.out.println(users.getName());
+            System.out.println(userOfthis);
+            if (users.getName().equals(userOfthis)){
+                System.out.println(userOfthis);
+                accountList = users.returnList();
+                System.out.println(accountList.size());
+                for (int c = 0; c< accountList.size(); c++){
+                    account newAccount1 = (account) accountList.get(c);
+                    System.out.println(newAccount1.getAccountNumber());
+                    spinnerList.add(newAccount1.getAccountNumber());
                 }
             }
         }
 
         ArrayAdapter<String> dataAdapter;
-        dataAdapter  = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerLista); // spinner for the account of money source
+        dataAdapter  = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerList); // spinner for the account of money source
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                if (parent.getItemAtPosition(position).equals("Valitse tili")){
+                if (parent.getItemAtPosition(position).equals("Valitse tili:")){
 
                 }
                 else{
@@ -99,60 +98,60 @@ public class TransferActivity extends AppCompatActivity {
 
     }
 
-    public void etsiTili(View V){ // checks if the account where money goes is from the same bank (if it finds it somewhere from the list)
-        String etsittava = tili.getText().toString();
-        for (int i = 0; i<spinnerLista.size(); i++){
-            if (spinnerLista.get(i).toString().equals(etsittava)){
-                tyyppi.setText("OMA TILI");
+    public void find(View V){ // checks if the account where money goes is from the same bank (if it finds it somewhere from the list)
+        String toFind = account1.getText().toString();
+        for (int i = 0; i< spinnerList.size(); i++){
+            if (spinnerList.get(i).toString().equals(toFind)){
+                type.setText("OMA TILI");
                 return;
             }
         }
-        for (int i = 0; i<oliolista.size(); i++){
-            objectUser kayttaja = (objectUser) oliolista.get(i);
-            System.out.println(kayttis);
-            tileja = kayttaja.returnList();
-            System.out.println(tileja.size());
-            for (int c = 0; c<tileja.size(); c++){
-                account tili = (account) tileja.get(c);
-                if (tili.getAccountNumber().equals(etsittava)){
-                    tyyppi.setText("SAMAN PANKIN TILI");
+        for (int i = 0; i< objectList.size(); i++){
+            objectUser users = (objectUser) objectList.get(i);
+            System.out.println(userOfthis);
+            accountList = users.returnList();
+            System.out.println(accountList.size());
+            for (int c = 0; c< accountList.size(); c++){
+                account newAccount1 = (account) accountList.get(c);
+                if (newAccount1.getAccountNumber().equals(toFind)){
+                    type.setText("SAMAN PANKIN TILI");
                     return;
                 }
             }
-            tyyppi.setText("VIERAS TILI");
+            type.setText("VIERAS TILI");
 
         }
     }
 
-    public void lahetaRahaa(View v){ //sends money to chosen account
-        int MON = Integer.parseInt(siirrettavaSumma.getText().toString().trim());
-        String lahde = item;
-        String kohde = tili.getText().toString();
-        for (int i = 0; i<oliolista.size(); i++){
-            objectUser kayttaja = (objectUser) oliolista.get(i);
-            System.out.println(kayttis);
-            tileja = kayttaja.returnList();
-            System.out.println(tileja.size());
-            for (int c = 0; c<tileja.size(); c++){
-                account tili = (account) tileja.get(c);
+    public void sendMoney(View v) { //sends money to chosen account
+        int MON = Integer.parseInt(transferSum.getText().toString().trim());
+        String source = item;
+        String goal = account1.getText().toString();
+        for (int i = 0; i < objectList.size(); i++) {
+            objectUser users = (objectUser) objectList.get(i);
+            System.out.println(userOfthis);
+            accountList = users.returnList();
+            System.out.println(accountList.size());
+            for (int c = 0; c < accountList.size(); c++) {
+                account newAccount1 = (account) accountList.get(c);
 
-                if (tili.isFreezed()){ //checks if the account is freezed
-                    Toast.makeText(getBaseContext(), "TILI JÄÄDYTETTY!", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (tili.getAccountNumber().equals(lahde)){
-                        tili.sendMoney(MON);
-                        kayttaja.tililtarahaaLista(kohde, lahde, MON);
-                    }
-                    if (tili.getAccountNumber().equals(kohde)) {
-                        tili.getMoney(MON);
-                        kayttaja.tilillerahaaLista(kohde, lahde, MON);
-                    }
-                    Intent intent = new Intent(this, Mainactivity.class);
-                    intent.putExtra("kayttis", kayttis);
-                    startActivity(intent);
-                }
+                if (newAccount1.getAccountNumber().equals(item)) {
 
+                    if (newAccount1.isFreezed()) { //checks if the account is freezed
+                        Toast.makeText(getBaseContext(), "TILI JÄÄDYTETTY!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (newAccount1.getAccountNumber().equals(source)) {
+                            newAccount1.sendMoney(MON);
+                            users.moneyFromList(goal, source, MON);
+                        }
+                        if (newAccount1.getAccountNumber().equals(goal)) {
+                            newAccount1.getMoney(MON);
+                            users.moneyToList(goal, source, MON);
+                        }
+                        Intent intent = new Intent(this, Mainactivity.class);
+                        intent.putExtra("nameOfUser", userOfthis);
+                        startActivity(intent);
+                    }
 
 
                 }
@@ -160,5 +159,5 @@ public class TransferActivity extends AppCompatActivity {
         }
 
 
-
+    }
 }

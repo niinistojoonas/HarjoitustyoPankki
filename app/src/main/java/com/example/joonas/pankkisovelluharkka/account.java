@@ -1,12 +1,10 @@
 package com.example.joonas.pankkisovelluharkka;
 
-import java.util.ArrayList;
-
 public class account {                //This class is a class for one account and it returns values depending on what the user wants
     private String accountNumber;
     private int money;
     private String accountType;
-    cardObject uusi = new cardObject();
+    cardObject newCard = new cardObject();
 
     boolean x = false; //this is true if this account has a card
 
@@ -32,19 +30,19 @@ public class account {                //This class is a class for one account an
     }
 
     public void addCard(String m, String n, String t){
-        uusi.createCard(m,n,t);
+        newCard.createCard(m,n,t);
     }
 
     public String getCardBuyLimit(){
-        return uusi.getMaksuraja();
+        return newCard.getCardBuyinglimit();
     }
 
     public String getCardTakeLimit(){
-        return uusi.getNostoraja();
+        return newCard.getCardLiftingLimit();
     }
 
     public String getCardArea(){
-        return uusi.getToimivuusalue();
+        return newCard.getCardZone();
     }
 
     public boolean hasCard(){
