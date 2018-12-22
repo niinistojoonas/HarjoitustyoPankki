@@ -26,6 +26,7 @@ public class TransferActivity extends AppCompatActivity {
 
     TextView type;
 
+
     String userOfthis;
 
     String item;
@@ -43,27 +44,24 @@ public class TransferActivity extends AppCompatActivity {
         type = findViewById(R.id.textView22);
 
 
-
         Bank newUSer = Bank.getInstance();
 
-        objectList =  newUSer.getList();
-
-
+        objectList = newUSer.getList();
 
 
         userOfthis = (String) getIntent().getSerializableExtra("nameOfUser");
-        System.out.println("TAMA ON"+ userOfthis);
+        System.out.println("TAMA ON" + userOfthis);
 
 
-        for (int i = 0; i< objectList.size(); i++){
+        for (int i = 0; i < objectList.size(); i++) {
             objectUser users = (objectUser) objectList.get(i);
             System.out.println(users.getName());
             System.out.println(userOfthis);
-            if (users.getName().equals(userOfthis)){
+            if (users.getName().equals(userOfthis)) {
                 System.out.println(userOfthis);
                 accountList = users.returnList();
                 System.out.println(accountList.size());
-                for (int c = 0; c< accountList.size(); c++){
+                for (int c = 0; c < accountList.size(); c++) {
                     account newAccount1 = (account) accountList.get(c);
                     System.out.println(newAccount1.getAccountNumber());
                     spinnerList.add(newAccount1.getAccountNumber());
@@ -72,17 +70,16 @@ public class TransferActivity extends AppCompatActivity {
         }
 
         ArrayAdapter<String> dataAdapter;
-        dataAdapter  = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerList); // spinner for the account of money source
+        dataAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerList); // spinner for the account of money source
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                if (parent.getItemAtPosition(position).equals("Valitse tili:")){
+                if (parent.getItemAtPosition(position).equals("Valitse tili:")) {
 
-                }
-                else{
+                } else {
 
                     item = parent.getItemAtPosition(position).toString();
                 }
@@ -98,22 +95,22 @@ public class TransferActivity extends AppCompatActivity {
 
     }
 
-    public void find(View V){ // checks if the account where money goes is from the same bank (if it finds it somewhere from the list)
+    public void find(View V) { // checks if the account where money goes is from the same bank (if it finds it somewhere from the list)
         String toFind = account1.getText().toString();
-        for (int i = 0; i< spinnerList.size(); i++){
-            if (spinnerList.get(i).toString().equals(toFind)){
+        for (int i = 0; i < spinnerList.size(); i++) {
+            if (spinnerList.get(i).toString().equals(toFind)) {
                 type.setText("OMA TILI");
                 return;
             }
         }
-        for (int i = 0; i< objectList.size(); i++){
+        for (int i = 0; i < objectList.size(); i++) {
             objectUser users = (objectUser) objectList.get(i);
             System.out.println(userOfthis);
             accountList = users.returnList();
             System.out.println(accountList.size());
-            for (int c = 0; c< accountList.size(); c++){
+            for (int c = 0; c < accountList.size(); c++) {
                 account newAccount1 = (account) accountList.get(c);
-                if (newAccount1.getAccountNumber().equals(toFind)){
+                if (newAccount1.getAccountNumber().equals(toFind)) {
                     type.setText("SAMAN PANKIN TILI");
                     return;
                 }
@@ -125,6 +122,7 @@ public class TransferActivity extends AppCompatActivity {
 
     public void sendMoney(View v) { //sends money to chosen account
         int MON = Integer.parseInt(transferSum.getText().toString().trim());
+        int enough = 0;
         String source = item;
         String goal = account1.getText().toString();
         for (int i = 0; i < objectList.size(); i++) {
@@ -140,24 +138,40 @@ public class TransferActivity extends AppCompatActivity {
                     if (newAccount1.isFreezed()) { //checks if the account is freezed
                         Toast.makeText(getBaseContext(), "TILI JÄÄDYTETTY!", Toast.LENGTH_SHORT).show();
                     } else {
+                        if (newAccount1.getMon() > MON){
                         if (newAccount1.getAccountNumber().equals(source)) {
                             newAccount1.sendMoney(MON);
                             users.moneyFromList(goal, source, MON);
+                            enough = 1;
                         }
-                        if (newAccount1.getAccountNumber().equals(goal)) {
-                            newAccount1.getMoney(MON);
-                            users.moneyToList(goal, source, MON);
                         }
-                        Intent intent = new Intent(this, Mainactivity.class);
-                        intent.putExtra("nameOfUser", userOfthis);
-                        startActivity(intent);
+                        else{
+                            Toast.makeText(getBaseContext(), "TILI JÄÄDYTETTY!", Toast.LENGTH_SHORT).show();
+                        }
+
+
                     }
 
 
                 }
             }
         }
+        for (int i = 0; i < objectList.size(); i++) {
+            objectUser users = (objectUser) objectList.get(i);
+            accountList = users.returnList();
+            for (int c = 0; c < accountList.size(); c++) {
+                account newAccount1 = (account) accountList.get(c);
+                if (newAccount1.getAccountNumber().equals(goal)) {
+                    if (enough == 1) {
+                        newAccount1.getMoney(MON);
+                        users.moneyToList(goal, source, MON);
+                    }
+                }
+            }
 
-
+        }
+        Intent intent = new Intent(this, Mainactivity.class);
+        intent.putExtra("nameOfUser", userOfthis);
+        startActivity(intent);
     }
 }
