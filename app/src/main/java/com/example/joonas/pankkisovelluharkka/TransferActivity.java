@@ -146,7 +146,7 @@ public class TransferActivity extends AppCompatActivity {
                         }
                         }
                         else{
-                            Toast.makeText(getBaseContext(), "TILI JÄÄDYTETTY!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(), "TILILLÄ EI OLE TARPEEKSI RAHAA!", Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -165,13 +165,13 @@ public class TransferActivity extends AppCompatActivity {
                     if (enough == 1) {
                         newAccount1.getMoney(MON);
                         users.moneyToList(goal, source, MON);
+                        Intent intent = new Intent(this, Mainactivity.class);
+                        intent.putExtra("nameOfUser", userOfthis);
+                        startActivity(intent);
                     }
                 }
             }
 
         }
-        Intent intent = new Intent(this, Mainactivity.class);
-        intent.putExtra("nameOfUser", userOfthis);
-        startActivity(intent);
     }
 }
